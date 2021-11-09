@@ -1,0 +1,63 @@
+package g11.g11_10;
+
+import java.awt.*;
+import java.util.Scanner;
+
+/**
+ * y = a * x + b
+ */
+public class Line extends Point {
+    double k;
+    double b;
+    int x1;
+    int x2;
+    int y1;
+    int y2;
+
+    public Line(Point point1, Point point2) {
+        x1 = point1.x;
+        y1 = point1.y;
+        x2 = point2.x;
+        y2 = point2.y;
+
+    }
+
+    public Line() {
+        askDataOfLine();
+    }
+
+    /*public void draw(Graphics g, int widthOval, int heightOval) {
+        g.drawLine(0, (int) (heightOval - this.b), widthOval, (int) (heightOval - (this.k * widthOval + this.b)));
+    }*/
+
+
+    public void draw(Graphics g) {
+        g.drawLine(x1, y1, x2, y2);
+    }
+
+
+    public void askDataOfLine(){
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Input corner of line: k = ");
+        k = sc.nextDouble();
+        System.out.print("Input hieght of line: b = ");
+        b = sc.nextInt();
+        System.out.printf("Your number: y = %fx + %d", k, b);
+    }
+
+    public double getYofX(int x, int height) {
+        k = (y1 - y2) / (x1 - x2);
+        b = y1 - k * x1;
+        return k * x + b;
+    }
+
+    @Override
+    public String toString() {
+        return "Line{" +
+                "x1=" + x1 +
+                ", x2=" + x2 +
+                ", y1=" + y1 +
+                ", y2=" + y2 +
+                '}';
+    }
+}
