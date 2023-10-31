@@ -1,4 +1,4 @@
-package g12.example4;
+package g12.paint;
 
 import javax.swing.*;
 import java.awt.*;

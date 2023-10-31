@@ -1,4 +1,4 @@
-package g12.example4;
+package g12.paint;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
