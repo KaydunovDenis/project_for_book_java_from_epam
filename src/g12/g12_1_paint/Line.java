@@ -1,4 +1,4 @@
-package g12.g12_1;
+package g12.g12_1_paint;
 
 import java.awt.*;
 

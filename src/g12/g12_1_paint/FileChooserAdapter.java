@@ -1,12 +1,8 @@
-package g12.g12_1;
+package g12.g12_1_paint;
 
 import javax.swing.*;
-import javax.swing.event.AncestorEvent;
-import javax.swing.event.AncestorListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import static javax.swing.JFrame.EXIT_ON_CLOSE;
 
 /**
  * @author DenisKaydunov
