@@ -1,7 +1,6 @@
-package jdbc.example_1_v1.src;
+package jdbc.example_1.src;
 
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.ResultSet;

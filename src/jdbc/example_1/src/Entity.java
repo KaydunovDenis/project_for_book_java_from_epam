@@ -1,4 +1,4 @@
-package jdbc.example_1_v1.src;
+package jdbc.example_1.src;
 
 import java.io.Serializable;
 
