@@ -1,4 +1,4 @@
-package jdbc.example_1.src;
+package jdbc_g13.example_1.src;
 
 import java.sql.Connection;
 import java.sql.Driver;

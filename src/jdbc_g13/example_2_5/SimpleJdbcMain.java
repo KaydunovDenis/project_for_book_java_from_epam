@@ -1,4 +1,4 @@
-package jdbc.example_2_5;
+package jdbc_g13.example_2_5;
 
 import org.h2.tools.Csv;
 import org.h2.tools.SimpleResultSet;

@@ -1,4 +1,4 @@
-package jdbc.example_2_5;
+package jdbc_g13.example_6.dao;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -7,16 +7,16 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class ConnectorCreator
+public class ConnectionCreator
 {
     private static final Properties PROPERTIES = new Properties();
     private static final String DATABASE_URL;
 
-    private ConnectorCreator(){}
+    private ConnectionCreator(){}
 
     static {
         try {
-            PROPERTIES.load(new FileReader("src/jdbc/example_1_v2/database.properties"));
+            PROPERTIES.load(new FileReader("src/jdbc/example_6/database.properties"));
             String driverName = PROPERTIES.getProperty("db.driver");
             Class.forName(driverName);
         }

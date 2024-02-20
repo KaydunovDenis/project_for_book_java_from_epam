@@ -1,6 +1,6 @@
-package jdbc.example_1.src;
+package jdbc_g13.example_1.src;
 
-public class Abonent extends jdbc.example_1.src.Entity
+public class Abonent extends jdbc_g13.example_1.src.Entity
 {
     private int id;
     private String name;
