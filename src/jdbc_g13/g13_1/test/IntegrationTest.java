@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class IntegrationTest
 {
-    private CatalogServiceImpl catalogService = new CatalogServiceImpl(new CatalogDao());
+    private final CatalogServiceImpl catalogService = new CatalogServiceImpl(new CatalogDao());
 
     @Test
     void create() throws DaoException

@@ -7,7 +7,7 @@ import lombok.Value;
 @EqualsAndHashCode(callSuper = true)
 public class File extends Entity
 {
-    private int size;
+    int size;
 
     File(Catalog parent, String name, int size)
     {

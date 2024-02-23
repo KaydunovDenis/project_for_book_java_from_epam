@@ -10,7 +10,7 @@ import java.util.List;
 
 public class CatalogServiceImpl implements CatalogService
 {
-    private CatalogDao catalogDao;
+    private final CatalogDao catalogDao;
 
     public CatalogServiceImpl(CatalogDao catalogDao)
     {
