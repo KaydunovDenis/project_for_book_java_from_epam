@@ -5,10 +5,14 @@ import com.github.kaydunov.dao.FileDao;
 import com.github.kaydunov.exception.DaoException;
 import com.github.kaydunov.model.Catalog;
 import com.github.kaydunov.model.Entity;
+import com.github.kaydunov.model.File;
+
+import java.nio.file.FileSystems;
+import java.util.List;
 
 public class FileSystemServiceImpl implements FileSystemsService
 {
-    CatalogServiceImpl catalogService = new CatalogServiceImpl();
+    CatalogService catalogService = new CatalogService();
     CatalogDao catalogDao = new CatalogDao();
     FileDao fileDao = new FileDao();
 
@@ -25,6 +29,12 @@ public class FileSystemServiceImpl implements FileSystemsService
     }
 
     @Override
+    public List<File> findFilesByFullPathMask(String mask) throws DaoException
+    {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void moveTo(Catalog destination, Catalog from) throws DaoException
     {
         Long destinationCatalogId = destination.getId();
@@ -36,12 +46,17 @@ public class FileSystemServiceImpl implements FileSystemsService
     @Override
     public void clearCatalog(Catalog catalog) throws DaoException
     {
-        throw new UnsupportedOperationException();
+        catalogService.clearCatalog(catalog);
     }
 
-    @Override
     public String getAbsolutePath(Entity entity)
     {
-        throw new UnsupportedOperationException();
+            String absolutePath = "";
+            Catalog parent = entity.getParent();
+            if (parent != null) {
+                String separator = FileSystems.getDefault().getSeparator();
+                absolutePath = getAbsolutePath(parent) + separator + parent.getName();
+            }
+            return absolutePath;
     }
 }

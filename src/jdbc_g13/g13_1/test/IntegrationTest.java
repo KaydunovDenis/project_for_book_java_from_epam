@@ -3,7 +3,7 @@ import com.github.kaydunov.exception.DaoException;
 import com.github.kaydunov.model.Catalog;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import com.github.kaydunov.service.CatalogServiceImpl;
+import com.github.kaydunov.service.CatalogService;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class IntegrationTest
 {
-    private final CatalogServiceImpl catalogService = new CatalogServiceImpl(new CatalogDao());
+    private final CatalogService catalogService = new CatalogService();
 
     @Test
     void create() throws DaoException

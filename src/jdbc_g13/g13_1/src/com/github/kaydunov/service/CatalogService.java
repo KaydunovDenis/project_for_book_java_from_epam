@@ -3,12 +3,10 @@ package com.github.kaydunov.service;
 import com.github.kaydunov.dao.CatalogDao;
 import com.github.kaydunov.exception.DaoException;
 import com.github.kaydunov.model.Catalog;
-import com.github.kaydunov.model.Entity;
 
-import java.nio.file.FileSystems;
 import java.util.List;
 
-public class CatalogServiceImpl
+public class CatalogService
 {
     private final CatalogDao catalogDao = new CatalogDao();
 
@@ -22,16 +20,6 @@ public class CatalogServiceImpl
         catalogDao.clearCatalog(catalog);
     }
 
-    public String getAbsolutePath(Entity entity)
-    {
-        String absolutePath = "";
-        Catalog parent = entity.getParent();
-        if (parent != null) {
-            String separator = FileSystems.getDefault().getSeparator();
-            absolutePath = getAbsolutePath(parent) + separator + parent.getName();
-        }
-        return absolutePath;
-    }
 
     public List<Catalog> getAll() throws DaoException
     {
