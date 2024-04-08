@@ -25,6 +25,7 @@ public interface BaseDao <K, E extends Entity>
             }
         }
         catch (SQLException e) { // log
+            //todo
         }
     }
 
