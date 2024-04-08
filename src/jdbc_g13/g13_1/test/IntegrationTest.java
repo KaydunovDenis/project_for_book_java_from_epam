@@ -1,6 +1,7 @@
 import com.github.kaydunov.dao.CatalogDao;
 import com.github.kaydunov.exception.DaoException;
 import com.github.kaydunov.model.Catalog;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import com.github.kaydunov.service.CatalogServiceImpl;
 
@@ -27,7 +28,7 @@ class IntegrationTest
     @Test
     void update() throws DaoException
     {
-        Catalog catalog = new Catalog (1L, null, "New Root");
+        Catalog catalog = new Catalog(1L, null, "New Root");
         boolean result = catalogService.update(catalog);
         assertTrue(result);
     }
@@ -60,5 +61,22 @@ class IntegrationTest
     {
         boolean result = catalogService.deleteById(4L);
         assertTrue(result);
+    }
+
+    @Test
+    void clearCatalog() throws DaoException
+    {
+        Catalog catalog = new Catalog();
+        catalog.setId(2L);
+        catalogService.clearCatalog(catalog);
+    }
+
+    @Test
+    void countFiles() throws DaoException
+    {
+        Catalog catalog = new Catalog();
+        catalog.setId(1L);
+        int result = catalogService.countFiles(catalog);
+        Assertions.assertEquals(10, result);
     }
 }

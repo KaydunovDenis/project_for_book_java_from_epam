@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 class CatalogServiceImplTest
 {
-    private CatalogService catalogService;
+    private FileSystemsService catalogService;
 
     @BeforeEach
     void beforeEach() {
@@ -39,5 +39,8 @@ class CatalogServiceImplTest
         //Then
         Assertions.assertEquals("/Parent", result);
     }
+
+
+
 
 }

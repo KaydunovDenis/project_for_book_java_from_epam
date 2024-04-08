@@ -8,40 +8,20 @@ import com.github.kaydunov.model.Entity;
 import java.nio.file.FileSystems;
 import java.util.List;
 
-public class CatalogServiceImpl implements CatalogService
+public class CatalogServiceImpl
 {
-    private final CatalogDao catalogDao;
+    private final CatalogDao catalogDao = new CatalogDao();
 
-    public CatalogServiceImpl(CatalogDao catalogDao)
+    public int countFiles(Catalog catalog) throws DaoException
     {
-        this.catalogDao = catalogDao;
+        return catalogDao.countFiles(catalog);
     }
 
-    @Override
-    public int countFiles(Catalog catalog)
+    public void clearCatalog(Catalog catalog) throws DaoException
     {
-        throw new UnsupportedOperationException();
+        catalogDao.clearCatalog(catalog);
     }
 
-    @Override
-    public int getSize(Catalog catalog)
-    {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void moveTo(Catalog from, Catalog destination)
-    {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void clearCatalog(Catalog catalog)
-    {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public String getAbsolutePath(Entity entity)
     {
         String absolutePath = "";

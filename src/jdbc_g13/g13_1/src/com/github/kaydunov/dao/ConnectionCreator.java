@@ -34,4 +34,6 @@ public class ConnectionCreator
     {
         return DriverManager.getConnection(DATABASE_URL, PROPERTIES);
     }
+
+    //todo to singlton
 }

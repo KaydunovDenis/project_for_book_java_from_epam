@@ -1,17 +1,26 @@
 package com.github.kaydunov.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 
 @Value
-@EqualsAndHashCode(callSuper = true)
+@AllArgsConstructor
 public class File extends Entity
 {
     int size;
 
-    File(Catalog parent, String name, int size)
+    @Builder
+    public File(Catalog parent, String name, int size)
     {
         super(parent, name);
+        this.size = size;
+    }
+
+    public File(Long id, Catalog parent, String name, int size)
+    {
+        super(id, parent, name);
         this.size = size;
     }
 }
