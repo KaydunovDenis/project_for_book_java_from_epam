@@ -14,8 +14,10 @@ import java.util.Optional;
 public class CatalogDao implements SpecialCatalogDao
 {
     private static final String SQL_SELECT_ALL = "select * from CATALOG";
-    private static final String SQL_SELECT_CaTALOG_BY_ID = "select * from CATALOG where CATALOG_ID = ?";
-    private static final String SQL_DELETE_CATALOG_BY_ID = "delete from CATALOG where CATALOG_ID = ?";
+    private static final String SQL_SELECT_CATALOG_BY_ID =
+        "select * from CATALOG where CATALOG_ID = ?";
+    private static final String SQL_DELETE_CATALOG_BY_ID =
+        "delete from CATALOG where CATALOG_ID = ?";
 
     private static final String SQL_UPDATE =
         "UPDATE CATALOG set NAME = ?, PARENT_CATALOG_ID = ? where CATALOG_ID = ?";
@@ -23,10 +25,11 @@ public class CatalogDao implements SpecialCatalogDao
     private static final String SQL_INSERT =
         "INSERT INTO CATALOG (name, parent_catalog_id) values (?, ?)";
 
-    private static final String SQL_CLEAR_CATALOG = "delete from CATALOG where PARENT_CATALOG_ID = ?";
+    private static final String SQL_CLEAR_CATALOG =
+        "delete from CATALOG where PARENT_CATALOG_ID = ?";
 
-    private static final String SQL_UPDATE_PARENT_CATALOG_ID = "UPDATE CATALOG " +
-        "SET PARENT_CATALOG_ID = ? WHERE PARENT_CATALOG_ID = ?";
+    private static final String SQL_UPDATE_PARENT_CATALOG_ID =
+        "UPDATE CATALOG " + "SET PARENT_CATALOG_ID = ? WHERE PARENT_CATALOG_ID = ?";
 
     private static final String SQL_COUNT_FILES_IN_CATALOG = """
         WITH RECURSIVE catalog_ids AS (
@@ -75,8 +78,9 @@ public class CatalogDao implements SpecialCatalogDao
     @Override
     public boolean create(Catalog catalog) throws DaoException
     {
-        try (Connection connection = ConnectionCreator.createConnection()) {
+        try (Connection connection = ConnectionCreator.createConnection();
             PreparedStatement statement = connection.prepareStatement(SQL_INSERT);
+        ) {
             statement.setString(1, catalog.getName());
             statement.setLong(2, catalog.getParent().getId());
             int result = statement.executeUpdate();
@@ -90,9 +94,10 @@ public class CatalogDao implements SpecialCatalogDao
     @Override
     public List<Catalog> findAll() throws DaoException
     {
-        try (Connection connection = ConnectionCreator.createConnection()) {
-            List<Catalog> catalogs = new ArrayList<>();
+        try (Connection connection = ConnectionCreator.createConnection();
             PreparedStatement statement = connection.prepareStatement(SQL_SELECT_ALL);
+        ) {
+            List<Catalog> catalogs = new ArrayList<>();
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 long parentCatalogId = resultSet.getLong("PARENT_CATALOG_ID");
@@ -115,15 +120,17 @@ public class CatalogDao implements SpecialCatalogDao
             return getCatalog(id, connection);
         }
         catch (SQLException e) {
-            throw new DaoException("Error finding data: " + e.getMessage(), e);
+            throw new DaoException("Error finding data by Id: " + e.getMessage(), e);
         }
     }
 
     private Catalog getCatalog(long id, Connection connection) throws SQLException, DaoException
     {
-        PreparedStatement statement = connection.prepareStatement(SQL_SELECT_CaTALOG_BY_ID);
-        statement.setLong(1, id);
-        ResultSet resultSet = statement.executeQuery();
+        ResultSet resultSet;
+        try (PreparedStatement statement = connection.prepareStatement(SQL_SELECT_CATALOG_BY_ID)) {
+            statement.setLong(1, id);
+            resultSet = statement.executeQuery();
+        }
         if (id != 0 && resultSet.next()) {
             Catalog parent = findById(resultSet.getLong("PARENT_CATALOG_ID"));
             String name = resultSet.getString("NAME");
@@ -137,8 +144,8 @@ public class CatalogDao implements SpecialCatalogDao
     @Override
     public boolean update(Catalog catalog) throws DaoException
     {
-        try (Connection connection = ConnectionCreator.createConnection()) {
-            PreparedStatement statement = connection.prepareStatement(SQL_UPDATE);
+        try (Connection connection = ConnectionCreator.createConnection();
+            PreparedStatement statement = connection.prepareStatement(SQL_UPDATE);) {
             long parentId = Optional.ofNullable(catalog.getParent()).map(Catalog::getId).orElse(0L);
             statement.setString(1, catalog.getName());
             statement.setLong(2, parentId);
@@ -160,8 +167,8 @@ public class CatalogDao implements SpecialCatalogDao
     @Override
     public boolean deleteById(Long id) throws DaoException
     {
-        try (Connection connection = ConnectionCreator.createConnection()) {
-            PreparedStatement statement = connection.prepareStatement(SQL_DELETE_CATALOG_BY_ID);
+        try (Connection connection = ConnectionCreator.createConnection();
+            PreparedStatement statement = connection.prepareStatement(SQL_DELETE_CATALOG_BY_ID);) {
             statement.setLong(1, id);
             int result = statement.executeUpdate();
             return result > 0;
@@ -185,23 +192,24 @@ public class CatalogDao implements SpecialCatalogDao
         return executeSQLWithParameter(SQL_COUNT_CATALOG_SIZE, catalogId);
     }
 
-    private int executeSQLWithParameter(String query, Long catalogId)
-        throws DaoException
+    private int executeSQLWithParameter(String query, Long catalogId) throws DaoException
     {
-        try (Connection connection = ConnectionCreator.createConnection()) {
+        try (Connection connection = ConnectionCreator.createConnection();
             PreparedStatement statement = connection.prepareStatement(query);
+        ) {
             statement.setLong(1, catalogId);
             statement.setLong(2, catalogId);
             ResultSet result = statement.executeQuery();
             return result.getInt(1);
         }
         catch (SQLException e) {
-            throw new DaoException("Error finding data: " + e.getMessage(), e);
+            throw new DaoException("Error finding size file: " + e.getMessage(), e);
         }
     }
 
     /**
      * Move all catalogs from Source Catalog to Destination Catalog
+     *
      * @param destinationCatalogId
      * @param sourceCatalogId
      * @return return true if any catalog was moved
@@ -210,22 +218,24 @@ public class CatalogDao implements SpecialCatalogDao
     public boolean updateParentCatalog(Long destinationCatalogId, long sourceCatalogId)
         throws DaoException
     {
-        try (Connection connection = ConnectionCreator.createConnection()) {
+        try (Connection connection = ConnectionCreator.createConnection();
             PreparedStatement statement = connection.prepareStatement(SQL_UPDATE_PARENT_CATALOG_ID);
+        ) {
             statement.setLong(1, destinationCatalogId);
             statement.setLong(2, sourceCatalogId);
             int result = statement.executeUpdate();
             return result > 0;
         }
         catch (SQLException e) {
-            throw new DaoException("Error finding data: " + e.getMessage(), e);
+            throw new DaoException("Error updating og parent catalog: " + e.getMessage(), e);
         }
     }
 
     public boolean clearCatalog(Catalog catalog) throws DaoException
     {
-        try (Connection connection = ConnectionCreator.createConnection()) {
+        try (Connection connection = ConnectionCreator.createConnection();
             PreparedStatement statement = connection.prepareStatement(SQL_CLEAR_CATALOG);
+        ) {
             statement.setLong(1, catalog.getId());
             int result = statement.executeUpdate();
             return result > 0;
