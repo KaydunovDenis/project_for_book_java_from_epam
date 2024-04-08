@@ -1,10 +1,16 @@
 package com.github.kaydunov.service;
 
+import com.github.kaydunov.exception.DaoException;
 import com.github.kaydunov.model.Catalog;
 import com.github.kaydunov.model.File;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class FileSystemServiceImplTest
 {
@@ -24,7 +30,7 @@ public class FileSystemServiceImplTest
         //When
         String result = fileSystemService.getAbsolutePath(child);
         //Then
-        Assertions.assertEquals("/GrandParent/Parent", result);
+        assertEquals("/GrandParent/Parent", result);
     }
 
     @Test
@@ -36,7 +42,7 @@ public class FileSystemServiceImplTest
         //When
         String result = fileSystemService.getAbsolutePath(child);
         //Then
-        Assertions.assertEquals("/Parent", result);
+        assertEquals("/Parent", result);
     }
 
     @Test
@@ -49,6 +55,14 @@ public class FileSystemServiceImplTest
         //When
         String result = fileSystemService.getAbsolutePath(file);
         //Then
-        Assertions.assertEquals("/Parent/Child", result);
+        assertEquals("/Parent/Child", result);
+    }
+
+    @Test
+    void findFilesByFullPathMask() throws DaoException
+    {
+        List<File> filesByFullPathMask = fileSystemService.findFilesByFullPathMask("Catalog 1");
+        assertNotNull(filesByFullPathMask);
+        assertEquals(filesByFullPathMask.size(), 7);
     }
 }

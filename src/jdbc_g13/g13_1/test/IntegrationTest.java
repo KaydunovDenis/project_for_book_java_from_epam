@@ -3,7 +3,6 @@ import com.github.kaydunov.exception.DaoException;
 import com.github.kaydunov.model.Catalog;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import com.github.kaydunov.service.CatalogService;
 
 import java.util.List;
 
@@ -11,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class IntegrationTest
 {
-    private final CatalogService catalogService = new CatalogService();
+    private final CatalogDao catalogDao = new CatalogDao();
 
     @Test
     void create() throws DaoException
@@ -21,7 +20,7 @@ class IntegrationTest
         Catalog newCatalog = new Catalog();
         newCatalog.setParent(parentCatalog);
         newCatalog.setName("test");
-        boolean result = catalogService.create(newCatalog);
+        boolean result = catalogDao.create(newCatalog);
         assertTrue(result);
     }
 
@@ -29,21 +28,21 @@ class IntegrationTest
     void update() throws DaoException
     {
         Catalog catalog = new Catalog(1L, null, "New Root");
-        boolean result = catalogService.update(catalog);
+        boolean result = catalogDao.update(catalog);
         assertTrue(result);
     }
 
     @Test
-    void getById_root() throws DaoException
+    void findById_root() throws DaoException
     {
-        Catalog result = catalogService.getById(1L);
+        Catalog result = catalogDao.findById(1L);
         assertNotNull(result);
     }
 
     @Test
-    void getById_child() throws DaoException
+    void findById_child() throws DaoException
     {
-        Catalog result = catalogService.getById(4L);
+        Catalog result = catalogDao.findById(4L);
         assertNotNull(result);
         assertEquals("Root", result.getParent().getParent().getParent().getName());
     }
@@ -51,7 +50,7 @@ class IntegrationTest
     @Test
     void getAll() throws DaoException
     {
-        List<Catalog> result = catalogService.getAll();
+        List<Catalog> result = catalogDao.findAll();
         assertNotNull(result);
         assertEquals(4, result.size());
     }
@@ -59,7 +58,7 @@ class IntegrationTest
     @Test
     void delete() throws DaoException
     {
-        boolean result = catalogService.deleteById(4L);
+        boolean result = catalogDao.deleteById(4L);
         assertTrue(result);
     }
 
@@ -68,7 +67,7 @@ class IntegrationTest
     {
         Catalog catalog = new Catalog();
         catalog.setId(2L);
-        catalogService.clearCatalog(catalog);
+        catalogDao.clearCatalog(catalog);
     }
 
     @Test
@@ -76,7 +75,7 @@ class IntegrationTest
     {
         Catalog catalog = new Catalog();
         catalog.setId(1L);
-        int result = catalogService.countFiles(catalog);
+        int result = catalogDao.countFiles(catalog);
         Assertions.assertEquals(10, result);
     }
 }

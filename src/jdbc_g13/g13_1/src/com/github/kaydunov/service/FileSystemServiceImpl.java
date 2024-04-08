@@ -12,14 +12,13 @@ import java.util.List;
 
 public class FileSystemServiceImpl implements FileSystemsService
 {
-    CatalogService catalogService = new CatalogService();
     CatalogDao catalogDao = new CatalogDao();
     FileDao fileDao = new FileDao();
 
     @Override
     public int countFiles(Catalog catalog) throws DaoException
     {
-        return catalogService.countFiles(catalog);
+        return catalogDao.countFiles(catalog);
     }
 
     @Override
@@ -31,7 +30,9 @@ public class FileSystemServiceImpl implements FileSystemsService
     @Override
     public List<File> findFilesByFullPathMask(String mask) throws DaoException
     {
-        throw new UnsupportedOperationException();
+        return fileDao.findAll().stream()
+            .filter(file -> getAbsolutePath(file).contains(mask))
+            .toList();
     }
 
     @Override
@@ -46,7 +47,7 @@ public class FileSystemServiceImpl implements FileSystemsService
     @Override
     public void clearCatalog(Catalog catalog) throws DaoException
     {
-        catalogService.clearCatalog(catalog);
+        catalogDao.clearCatalog(catalog);
     }
 
     public String getAbsolutePath(Entity entity)
