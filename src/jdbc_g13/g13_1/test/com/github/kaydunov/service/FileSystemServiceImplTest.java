@@ -3,7 +3,6 @@ package com.github.kaydunov.service;
 import com.github.kaydunov.exception.DaoException;
 import com.github.kaydunov.model.Catalog;
 import com.github.kaydunov.model.File;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +11,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class FileSystemServiceImplTest
+class FileSystemServiceImplTest
 {
     FileSystemServiceImpl fileSystemService;
 
@@ -63,6 +62,6 @@ public class FileSystemServiceImplTest
     {
         List<File> filesByFullPathMask = fileSystemService.findFilesByFullPathMask("Catalog 1");
         assertNotNull(filesByFullPathMask);
-        assertEquals(filesByFullPathMask.size(), 7);
+        assertEquals(7, filesByFullPathMask.size());
     }
 }
