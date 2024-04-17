@@ -158,11 +158,6 @@ public class CatalogDao implements SpecialCatalogDao
         }
     }
 
-    public boolean delete(Catalog catalog) throws DaoException
-    {
-        return deleteById(catalog.getId());
-    }
-
     @Override
     public boolean deleteById(Long id) throws DaoException
     {
@@ -211,10 +206,9 @@ public class CatalogDao implements SpecialCatalogDao
      *
      * @param destinationCatalogId
      * @param sourceCatalogId
-     * @return return true if any catalog was moved
      * @throws DaoException
      */
-    public boolean updateParentCatalog(Long destinationCatalogId, long sourceCatalogId)
+    public void updateParentCatalog(Long destinationCatalogId, long sourceCatalogId)
         throws DaoException
     {
         try (Connection connection = ConnectionCreator.createConnection();
@@ -222,8 +216,7 @@ public class CatalogDao implements SpecialCatalogDao
         ) {
             statement.setLong(1, destinationCatalogId);
             statement.setLong(2, sourceCatalogId);
-            int result = statement.executeUpdate();
-            return result > 0;
+            statement.executeUpdate();
         }
         catch (SQLException e) {
             throw new DaoException("Error updating og parent catalog: " + e.getMessage(), e);

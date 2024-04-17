@@ -2,7 +2,6 @@ package com.github.kaydunov.dao;
 
 import com.github.kaydunov.exception.DaoException;
 import com.github.kaydunov.model.Entity;
-import com.github.kaydunov.model.File;
 
 import java.util.List;
 
@@ -12,8 +11,6 @@ public interface BaseDao <K, E extends Entity>
     List<E> findAll() throws DaoException;
     E findById(K id) throws DaoException;
     boolean  update(E entity) throws DaoException;
-
-    boolean delete(File file) throws DaoException;
 
     boolean deleteById(K id) throws DaoException;
 }
