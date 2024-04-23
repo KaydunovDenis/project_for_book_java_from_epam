@@ -78,8 +78,8 @@ public class CatalogDao implements SpecialCatalogDao
     @Override
     public boolean create(Catalog catalog) throws DaoException
     {
-        try (Connection connection = ConnectionCreator.createConnection();
-            PreparedStatement statement = connection.prepareStatement(SQL_INSERT)
+        try (Connection connection = ConnectionCreator.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SQL_INSERT)
         ) {
             statement.setString(1, catalog.getName());
             statement.setLong(2, catalog.getParent().getId());
@@ -94,8 +94,8 @@ public class CatalogDao implements SpecialCatalogDao
     @Override
     public List<Catalog> findAll() throws DaoException
     {
-        try (Connection connection = ConnectionCreator.createConnection();
-            PreparedStatement statement = connection.prepareStatement(SQL_SELECT_ALL)
+        try (Connection connection = ConnectionCreator.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SQL_SELECT_ALL)
         ) {
             List<Catalog> catalogs = new ArrayList<>();
             ResultSet resultSet = statement.executeQuery();
@@ -116,7 +116,7 @@ public class CatalogDao implements SpecialCatalogDao
     @Override
     public Catalog findById(Long id) throws DaoException
     {
-        try (Connection connection = ConnectionCreator.createConnection()) {
+        try (Connection connection = ConnectionCreator.getConnection()) {
             return getCatalog(id, connection);
         }
         catch (SQLException e) {
@@ -144,8 +144,8 @@ public class CatalogDao implements SpecialCatalogDao
     @Override
     public boolean update(Catalog catalog) throws DaoException
     {
-        try (Connection connection = ConnectionCreator.createConnection();
-            PreparedStatement statement = connection.prepareStatement(SQL_UPDATE)) {
+        try (Connection connection = ConnectionCreator.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SQL_UPDATE)) {
             long parentId = Optional.ofNullable(catalog.getParent()).map(Catalog::getId).orElse(0L);
             statement.setString(1, catalog.getName());
             statement.setLong(2, parentId);
@@ -161,8 +161,8 @@ public class CatalogDao implements SpecialCatalogDao
     @Override
     public boolean deleteById(Long id) throws DaoException
     {
-        try (Connection connection = ConnectionCreator.createConnection();
-            PreparedStatement statement = connection.prepareStatement(SQL_DELETE_CATALOG_BY_ID)) {
+        try (Connection connection = ConnectionCreator.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SQL_DELETE_CATALOG_BY_ID)) {
             statement.setLong(1, id);
             int result = statement.executeUpdate();
             return result > 0;
@@ -188,8 +188,8 @@ public class CatalogDao implements SpecialCatalogDao
 
     private int executeSQLWithParameter(String query, Long catalogId) throws DaoException
     {
-        try (Connection connection = ConnectionCreator.createConnection();
-            PreparedStatement statement = connection.prepareStatement(query)
+        try (Connection connection = ConnectionCreator.getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)
         ) {
             statement.setLong(1, catalogId);
             statement.setLong(2, catalogId);
@@ -211,8 +211,8 @@ public class CatalogDao implements SpecialCatalogDao
     public void updateParentCatalog(Long destinationCatalogId, long sourceCatalogId)
         throws DaoException
     {
-        try (Connection connection = ConnectionCreator.createConnection();
-            PreparedStatement statement = connection.prepareStatement(SQL_UPDATE_PARENT_CATALOG_ID)
+        try (Connection connection = ConnectionCreator.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SQL_UPDATE_PARENT_CATALOG_ID)
         ) {
             statement.setLong(1, destinationCatalogId);
             statement.setLong(2, sourceCatalogId);
@@ -225,8 +225,8 @@ public class CatalogDao implements SpecialCatalogDao
 
     public void clearCatalog(Catalog catalog) throws DaoException
     {
-        try (Connection connection = ConnectionCreator.createConnection();
-            PreparedStatement statement = connection.prepareStatement(SQL_CLEAR_CATALOG)
+        try (Connection connection = ConnectionCreator.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SQL_CLEAR_CATALOG)
         ) {
             statement.setLong(1, catalog.getId());
             statement.executeUpdate();

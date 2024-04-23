@@ -30,7 +30,7 @@ public class ConnectionCreator
     {
     }
 
-    public static Connection createConnection() throws SQLException
+    public static Connection getConnection() throws SQLException
     {
         return DriverManager.getConnection(DATABASE_URL, PROPERTIES);
     }

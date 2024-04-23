@@ -24,8 +24,8 @@ public class FileDao implements BaseDao<Long, File> {
 
     @Override
     public boolean create(File file) throws DaoException {
-        try (Connection connection = ConnectionCreator.createConnection();
-            PreparedStatement statement = connection.prepareStatement(SQL_INSERT)) {
+        try (Connection connection = ConnectionCreator.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SQL_INSERT)) {
             statement.setLong(1, file.getParent().getId());
             statement.setString(2, file.getName());
             statement.setInt(3, file.getSize());
@@ -39,9 +39,9 @@ public class FileDao implements BaseDao<Long, File> {
     @Override
     public List<File> findAll() throws DaoException {
         List<File> files = new ArrayList<>();
-        try (Connection connection = ConnectionCreator.createConnection();
-            PreparedStatement statement = connection.prepareStatement(SQL_SELECT_ALL);
-            ResultSet resultSet = statement.executeQuery()) {
+        try (Connection connection = ConnectionCreator.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SQL_SELECT_ALL);
+             ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
                 File file = extractFileFromResultSet(resultSet);
                 files.add(file);
@@ -54,8 +54,8 @@ public class FileDao implements BaseDao<Long, File> {
 
     @Override
     public File findById(Long id) throws DaoException {
-        try (Connection connection = ConnectionCreator.createConnection();
-            PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BY_ID)) {
+        try (Connection connection = ConnectionCreator.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SQL_SELECT_BY_ID)) {
             statement.setLong(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
@@ -81,8 +81,8 @@ public class FileDao implements BaseDao<Long, File> {
 
     @Override
     public boolean update(File file) throws DaoException {
-        try (Connection connection = ConnectionCreator.createConnection();
-            PreparedStatement statement = connection.prepareStatement(SQL_UPDATE)) {
+        try (Connection connection = ConnectionCreator.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SQL_UPDATE)) {
             statement.setString(1, file.getName());
             statement.setInt(2, file.getSize());
             statement.setLong(3, file.getId());
@@ -94,14 +94,9 @@ public class FileDao implements BaseDao<Long, File> {
     }
 
     @Override
-    public boolean delete(File file) throws DaoException {
-        return deleteById(file.getId());
-    }
-
-    @Override
     public boolean deleteById(Long id) throws DaoException {
-        try (Connection connection = ConnectionCreator.createConnection();
-            PreparedStatement statement = connection.prepareStatement(SQL_DELETE_BY_ID)) {
+        try (Connection connection = ConnectionCreator.getConnection();
+             PreparedStatement statement = connection.prepareStatement(SQL_DELETE_BY_ID)) {
             statement.setLong(1, id);
             int rowsDeleted = statement.executeUpdate();
             return rowsDeleted > 0;
@@ -120,7 +115,7 @@ public class FileDao implements BaseDao<Long, File> {
     public boolean updateParentCatalog(Long destinationCatalogId, long sourceCatalogId)
         throws DaoException
     {
-        try (Connection connection = ConnectionCreator.createConnection()) {
+        try (Connection connection = ConnectionCreator.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(SQL_UPDATE_PARENT_CATALOG_ID);
             statement.setLong(1, destinationCatalogId);
             statement.setLong(2, sourceCatalogId);
