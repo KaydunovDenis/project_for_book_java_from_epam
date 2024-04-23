@@ -10,6 +10,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/resources" type="java-test-resource" />
+      <excludeFolder url="file://$MODULE_DIR$/.sapient" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
@@ -19,9 +20,20 @@
           <root url="jar://$MODULE_DIR$/lib/lombok-1.18.28.jar!/" />
         </CLASSES>
         <JAVADOC />
-        <SOURCES />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.ideaLibSources/lombok-1.18.28-sources.jar!/" />
+        </SOURCES>
       </library>
     </orderEntry>
+    <orderEntry type="library" name="mapstruct-processor-1.6.0.Beta1" level="project" />
+    <orderEntry type="library" name="h2-2.2.2241" level="project" />
+    <orderEntry type="library" name="mapstruct" level="project" />
+    <orderEntry type="library" name="mapstruct.processor" level="project" />
+    <orderEntry type="library" name="mapstruct-processor-1.5.5.Final" level="project" />
+    <orderEntry type="library" name="mapstruct-processor-1.5.5.Final1" level="project" />
+    <orderEntry type="library" name="bluecatcode.mockito.1.10.19.extended" level="project" />
+    <orderEntry type="library" name="mockito.inline" level="project" />
+    <orderEntry type="library" name="hamcrest" level="project" />
   </component>
   <component name="SonarLintModuleSettings">
     <option name="uniqueId" value="aecb24fa-47b3-416b-ac29-3e8df61c3765" />

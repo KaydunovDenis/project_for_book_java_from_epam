@@ -7,32 +7,34 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Properties;
 
-public class ConnectionCreator
-{
+public class ConnectionManager {
     private static final Properties PROPERTIES = new Properties();
     private static final String DATABASE_URL;
 
     static {
         try {
-            PROPERTIES.load(new FileReader("resources/database.properties"));
+            PROPERTIES.load(new FileReader("src/main/resources/database.properties"));
             String driverName = PROPERTIES.getProperty("db.driver");
             Class.forName(driverName);
-        }
-        catch (IOException | ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException e) {
             throw new DatabaseConfigurationException("Incorrect database driver", e);
         }
         DATABASE_URL = PROPERTIES.getProperty("db.url");
     }
 
-    public Connection createConnection() throws SQLException
-    {
-        return DriverManager.getConnection(DATABASE_URL, PROPERTIES);
+    private ConnectionManager(){}
+
+    private static class SingletonHelper {
+        private static final ConnectionManager INSTANCE = new ConnectionManager();
     }
 
-    public Statement getStatement() throws SQLException {
-        return this.createConnection().createStatement();
+    public static ConnectionManager getInstance() {
+        return SingletonHelper.INSTANCE;
+    }
+
+    public Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(DATABASE_URL, PROPERTIES);
     }
 }
